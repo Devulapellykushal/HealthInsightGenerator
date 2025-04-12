@@ -47,7 +47,7 @@ export default function InsightsPage() {
     setTrendImage('');
 
     try {
-      const res = await fetch('http://localhost:10000/upload-csv/', {
+      const res = await fetch('https://hig-pzyc.onrender.com/upload-csv/', {
         method: 'POST',
         body: form
       });
