@@ -94,7 +94,7 @@ This project includes:
 
 1. Clone the repo
 
-git clone https://github.com/HealthInsightsGenerator.git
+git clone https://github.com/HealthInsightGenerator.git
 cd HealthInsightsGenerator
 
 📥 Getting Started
