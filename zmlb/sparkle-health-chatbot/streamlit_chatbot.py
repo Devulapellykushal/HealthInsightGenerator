@@ -1,9 +1,161 @@
+# import streamlit as st
+# import requests
+# import json
+# from dotenv import load_dotenv
+# import os
+# import time
+
+# load_dotenv()
+# GEMINI_API_KEY = "AIzaSyBn3LmJbLYp_BypnA2eSd5YC2kim3wlUWo"
+
+# SYSTEM_PROMPT = """
+# You are Sparkle, an AI health coach. Your role is to assist users with health-related queries in a friendly, supportive, and intelligent way.
+
+# You are capable of providing personalized guidance and educational support on:
+
+# 🛌 Sleep & Rest:
+# - Sleep habits and how to improve sleep quality
+# - Sleep hygiene and routines
+
+# 💧 Hydration & Nutrition:
+# - Water intake goals and hydration habits
+# - Macronutrients (carbs, protein, fats) explained in simple terms
+# - Meal planning tips (e.g., diabetic-friendly, low-carb, heart-healthy)
+# - Sample healthy food or snack ideas
+
+# 🏃 Physical Activity & Health Goals:
+# - Daily step count tracking
+# - Personalized fitness suggestions
+# - Health goal tracking (e.g., “I want to walk 10,000 steps a day”)
+# - Safe exercise and injury prevention
+
+# 🙂 Mood & Mental Well-being:
+# - Mood tracking and emotional patterns
+# - Stress management tips
+# - Breathing exercises and mindfulness practices
+# - Recognizing signs of burnout and self-care suggestions
+
+# 🧪 Medical Literacy (non-diagnostic):
+# - Common medications (tablets, syrups, powders, injections, insulins, etc.)
+# - Medical devices and their usage (e.g., glucometers, BP monitors)
+# - Founders or inventors of medical breakthroughs or pharma companies
+# - Differences between generic and branded medicines
+# - Basics of lab tests and their interpretations (e.g., HbA1c, BMI)
+# - Awareness of chronic conditions like diabetes or hypertension
+# - Public health topics like vaccines, disease prevention, first aid
+
+# 📱 Health-Tech & Modern Care:
+# - Digital health innovations (e.g., wearables, smart health apps)
+# - AI in healthcare and robotic diagnostics
+# - Benefits of telemedicine
+
+# 🌿 Environmental & Holistic Wellness:
+# - Benefits of sunlight, walking, and green spaces
+# - Effects of pollution on respiratory health
+# - Digital detox and reducing screen time
+
+# 💡 If the user asks about **personal health insights** (e.g., “How am I doing?”, “Show my weekly summary”), and no health data has been provided yet, kindly inform them to upload or generate their insights first.
+
+# ❌ If the user's query is **not related to health, wellness, medicine, or the medical industry**, politely let them know that you are only trained to handle health-related topics and suggest they ask something in that area.
+
+# Always personalize your responses based on the user’s intent and the available insights. Be empathetic, motivational, and avoid generic replies. Your tone should be encouraging and human-like, just like a friendly wellness coach.
+# """
+
+# def ask_gemini(user_message, chat_history):
+#     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={GEMINI_API_KEY}"
+
+#     conversation = ""
+#     for sender, msg in chat_history:
+#         role = "User" if sender == "You" else "Sparkle"
+#         conversation += f"{role}: {msg}\n"
+#     conversation += f"User: {user_message}\nSparkle:"
+
+#     prompt = f"{SYSTEM_PROMPT}\n\n{conversation}"
+
+#     headers = {"Content-Type": "application/json"}
+#     data = {
+#         "contents": [
+#             {
+#                 "parts": [{"text": prompt}]
+#             }
+#         ]
+#     }
+
+#     try:
+#         response = requests.post(url, headers=headers, data=json.dumps(data))
+#         response.raise_for_status()
+#         gemini_reply = response.json()["candidates"][0]["content"]["parts"][0]["text"]
+#         return gemini_reply.strip()
+#     except Exception as e:
+#         return f"⚠️ Gemini API error: {e}"
+
+# st.set_page_config(page_title="Sparkle AI Health Chatbot", layout="centered")
+# st.title("🤖 Sparkle: AI Health Chatbot")
+# st.caption("Chat with Sparkle about health, wellness, healthcare, health products, and more.")
+
+# with st.container():
+#     # st.markdown("### 📝 Please provide your health insights!")
+#     st.markdown(
+#         "To get more personalized replies, kindly upload insights from the Insight Generator. Once you do, Sparkle can assist you better with your health-related questions!"
+#     )
+
+
+# if "chat_history" not in st.session_state:
+#     st.session_state.chat_history = []
+# if "pending_message" not in st.session_state:
+#     st.session_state.pending_message = None
+
+# with st.container():
+#     # st.markdown("### 🗨️ Health Chat")
+#     chat_area = st.container()
+#     with chat_area:
+#         for sender, msg in st.session_state.chat_history:
+#             emoji = "❓" if sender == "You" else "🔍"
+#             with st.chat_message(emoji):
+#                 st.markdown(msg)
+
+#         if st.session_state.pending_message:
+#             with st.chat_message("🔍"):
+#                 with st.spinner("Sparkle is thinking..."):
+#                     time.sleep(1.5)
+#                     st.markdown(st.session_state.pending_message)
+#             st.session_state.chat_history.append(("Sparkle Bot", st.session_state.pending_message))
+#             st.session_state.pending_message = None
+#             st.rerun()
+
+# with st.container():
+#     with st.form(key="chat_input_form", clear_on_submit=True):
+#         user_query = st.text_input("💬 Type your message", key="user_input")
+#         submitted = st.form_submit_button("Send")
+
+#     if submitted and user_query:
+#         st.session_state.chat_history.append(("You", user_query))
+#         gemini_reply = ask_gemini(user_query, st.session_state.chat_history)
+#         st.session_state.pending_message = gemini_reply
+#         st.rerun()
+
+# if "chat_history" in st.session_state and st.session_state.chat_history:
+#     export_text = ""
+#     for sender, msg in st.session_state.chat_history:
+#         emoji = "❓" if sender == "You" else "🔍"
+#         export_text += f"{emoji} {msg}\n\n"
+
+#     st.download_button(
+#         label="📥 Download Chat (.txt)",
+#         data=export_text,
+#         file_name="sparkle_chat.txt",
+#         mime="text/plain"
+#     )
+
+
+
 import streamlit as st
 import requests
 import json
 from dotenv import load_dotenv
 import os
 import time
+import pandas as pd
 
 load_dotenv()
 GEMINI_API_KEY = "AIzaSyBn3LmJbLYp_BypnA2eSd5YC2kim3wlUWo"
@@ -61,13 +213,23 @@ You are capable of providing personalized guidance and educational support on:
 Always personalize your responses based on the user’s intent and the available insights. Be empathetic, motivational, and avoid generic replies. Your tone should be encouraging and human-like, just like a friendly wellness coach.
 """
 
-def ask_gemini(user_message, chat_history):
+def ask_gemini(user_message, chat_history, user_insights):
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={GEMINI_API_KEY}"
 
     conversation = ""
     for sender, msg in chat_history:
         role = "User" if sender == "You" else "Sparkle"
         conversation += f"{role}: {msg}\n"
+
+    if user_insights is not None:
+        if isinstance(user_insights, pd.DataFrame):  # If it's a DataFrame
+            if not user_insights.empty:  # Check if the DataFrame is not empty
+                conversation += f"User Insights (Hydration Log): {user_insights.to_string()}\n"
+        elif isinstance(user_insights, dict):  # If it's a JSON object
+            conversation += f"User Insights: {json.dumps(user_insights)}\n"
+        elif isinstance(user_insights, str):  # If it's plain text
+            conversation += f"User Insights: {user_insights}\n"
+        
     conversation += f"User: {user_message}\nSparkle:"
 
     prompt = f"{SYSTEM_PROMPT}\n\n{conversation}"
@@ -94,14 +256,25 @@ st.title("🤖 Sparkle: AI Health Chatbot")
 st.caption("Chat with Sparkle about health, wellness, healthcare, health products, and more.")
 
 with st.container():
-    # st.markdown("### 📝 Please provide your health insights!")
-    st.markdown(
-        "To get more personalized replies, kindly upload insights from the Insight Generator. Once you do, Sparkle can assist you better with your health-related questions!"
-    )
+    uploaded_file = st.file_uploader("Upload Health Insights File (TXT, CSV, JSON)", type=["txt", "csv", "json"])
+
+user_insights = None
+
+if uploaded_file:
+    if uploaded_file.type == "text/plain":
+        user_insights = uploaded_file.getvalue().decode("utf-8") 
+    elif uploaded_file.type == "application/json":
+        user_insights = json.loads(uploaded_file.getvalue().decode("utf-8")) 
+    elif uploaded_file.type == "text/csv":
+        user_insights = pd.read_csv(uploaded_file) 
+
+    st.write("Uploaded Insights:")
+    st.write(user_insights)
 
 
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
+
 if "pending_message" not in st.session_state:
     st.session_state.pending_message = None
 
@@ -119,7 +292,7 @@ with st.container():
                 with st.spinner("Sparkle is thinking..."):
                     time.sleep(1.5)
                     st.markdown(st.session_state.pending_message)
-            st.session_state.chat_history.append(("Sparkle Bot", st.session_state.pending_message))
+            st.session_state.chat_history.append(("Sparkle", st.session_state.pending_message))
             st.session_state.pending_message = None
             st.rerun()
 
@@ -130,7 +303,7 @@ with st.container():
 
     if submitted and user_query:
         st.session_state.chat_history.append(("You", user_query))
-        gemini_reply = ask_gemini(user_query, st.session_state.chat_history)
+        gemini_reply = ask_gemini(user_query, st.session_state.chat_history, user_insights)
         st.session_state.pending_message = gemini_reply
         st.rerun()
 
@@ -146,188 +319,6 @@ if "chat_history" in st.session_state and st.session_state.chat_history:
         file_name="sparkle_chat.txt",
         mime="text/plain"
     )
-
-
-
-# import streamlit as st
-# import requests
-# import json
-# from dotenv import load_dotenv
-# import os
-# import time
-# import pandas as pd
-
-# # ✅ This must be the first Streamlit command
-# st.set_page_config(page_title="Sparkle AI Health Chatbot", layout="centered")
-
-# # --- Load environment variables ---
-# load_dotenv()
-# GEMINI_API_KEY = "AIzaSyBn3LmJbLYp_BypnA2eSd5YC2kim3wlUWo"
-
-# # --- Gemini System Prompt ---
-# SYSTEM_PROMPT = """
-# You are Sparkle, an AI health coach. Your role is to assist users with health-related queries in a friendly, supportive, and intelligent way.
-
-# You are capable of providing personalized guidance and educational support on:
-
-# 🛌 Sleep & Rest:
-# - Sleep habits and how to improve sleep quality
-# - Sleep hygiene and routines
-
-# 💧 Hydration & Nutrition:
-# - Water intake goals and hydration habits
-# - Macronutrients (carbs, protein, fats) explained in simple terms
-# - Meal planning tips (e.g., diabetic-friendly, low-carb, heart-healthy)
-# - Sample healthy food or snack ideas
-
-# 🏃 Physical Activity & Health Goals:
-# - Daily step count tracking
-# - Personalized fitness suggestions
-# - Health goal tracking (e.g., “I want to walk 10,000 steps a day”)
-# - Safe exercise and injury prevention
-
-# 🙂 Mood & Mental Well-being:
-# - Mood tracking and emotional patterns
-# - Stress management tips
-# - Breathing exercises and mindfulness practices
-# - Recognizing signs of burnout and self-care suggestions
-
-# 🧪 Medical Literacy (non-diagnostic):
-# - Common medications (tablets, syrups, powders, injections, insulins, etc.)
-# - Medical devices and their usage (e.g., glucometers, BP monitors)
-# - Founders or inventors of medical breakthroughs or pharma companies
-# - Differences between generic and branded medicines
-# - Basics of lab tests and their interpretations (e.g., HbA1c, BMI)
-# - Awareness of chronic conditions like diabetes or hypertension
-# - Public health topics like vaccines, disease prevention, first aid
-
-# 📱 Health-Tech & Modern Care:
-# - Digital health innovations (e.g., wearables, smart health apps)
-# - AI in healthcare and robotic diagnostics
-# - Benefits of telemedicine
-
-# 🌿 Environmental & Holistic Wellness:
-# - Benefits of sunlight, walking, and green spaces
-# - Effects of pollution on respiratory health
-# - Digital detox and reducing screen time
-
-# 💡 If the user asks about **personal health insights** (e.g., “How am I doing?”, “Show my weekly summary”), and no health data has been provided yet, kindly inform them to upload or generate their insights first.
-
-# ❌ If the user's query is **not related to health, wellness, medicine, or the medical industry**, politely let them know that you are only trained to handle health-related topics and suggest they ask something in that area.
-
-# Always personalize your responses based on the user’s intent and the available insights. Be empathetic, motivational, and avoid generic replies. Your tone should be encouraging and human-like, just like a friendly wellness coach.
-# """
-
-# # --- Gemini API Call ---
-# def ask_gemini(user_message, chat_history, user_insights):
-#     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={GEMINI_API_KEY}"
-
-#     conversation = ""
-#     for sender, msg in chat_history:
-#         role = "User" if sender == "You" else "Sparkle"
-#         conversation += f"{role}: {msg}\n"
-
-#     if user_insights is not None:
-#         if isinstance(user_insights, pd.DataFrame):
-#             if not user_insights.empty:
-#                 conversation += f"User Insights (Hydration Log): {user_insights.to_string()}\n"
-#         elif isinstance(user_insights, dict):
-#             conversation += f"User Insights: {json.dumps(user_insights)}\n"
-#         elif isinstance(user_insights, str):
-#             conversation += f"User Insights: {user_insights}\n"
-        
-#     conversation += f"User: {user_message}\nSparkle:"
-
-#     prompt = f"{SYSTEM_PROMPT}\n\n{conversation}"
-
-#     headers = {"Content-Type": "application/json"}
-#     data = {
-#         "contents": [
-#             {
-#                 "parts": [{"text": prompt}]
-#             }
-#         ]
-#     }
-
-#     try:
-#         response = requests.post(url, headers=headers, data=json.dumps(data))
-#         response.raise_for_status()
-#         gemini_reply = response.json()["candidates"][0]["content"]["parts"][0]["text"]
-#         return gemini_reply.strip()
-#     except Exception as e:
-#         return f"⚠️ Gemini API error: {e}"
-
-# # --- UI ---
-# st.title("🤖 Sparkle: AI Health Chatbot")
-# st.caption("Chat with Sparkle about health, wellness, healthcare, health products, and more.")
-
-# # --- Upload Health Insights ---
-# with st.container():
-#     uploaded_file = st.file_uploader("Upload Health Insights File (TXT, CSV, JSON)", type=["txt", "csv", "json"])
-
-# user_insights = None
-# if uploaded_file:
-#     if uploaded_file.type == "text/plain":
-#         user_insights = uploaded_file.getvalue().decode("utf-8")
-#     elif uploaded_file.type == "application/json":
-#         user_insights = json.loads(uploaded_file.getvalue().decode("utf-8"))
-#     elif uploaded_file.type == "text/csv":
-#         user_insights = pd.read_csv(uploaded_file)
-
-#     st.write("✅ Uploaded Insights:")
-#     st.write(user_insights)
-
-# # --- Initialize Chat History ---
-# if "chat_history" not in st.session_state:
-#     st.session_state.chat_history = []
-
-# if "pending_message" not in st.session_state:
-#     st.session_state.pending_message = None
-
-# # --- Chat Display ---
-# with st.container():
-#     chat_area = st.container()
-#     with chat_area:
-#         for sender, msg in st.session_state.chat_history:
-#             emoji = "❓" if sender == "You" else "🔍"
-#             with st.chat_message(emoji):
-#                 st.markdown(msg)
-
-#         if st.session_state.pending_message:
-#             with st.chat_message("🔍"):
-#                 with st.spinner("Sparkle is thinking..."):
-#                     time.sleep(1.5)
-#                     st.markdown(st.session_state.pending_message)
-#             st.session_state.chat_history.append(("Sparkle", st.session_state.pending_message))
-#             st.session_state.pending_message = None
-#             st.rerun()
-
-# # --- User Input Form ---
-# with st.container():
-#     with st.form(key="chat_input_form", clear_on_submit=True):
-#         user_query = st.text_input("💬 Type your message", key="user_input")
-#         submitted = st.form_submit_button("Send")
-
-#     if submitted and user_query:
-#         st.session_state.chat_history.append(("You", user_query))
-#         gemini_reply = ask_gemini(user_query, st.session_state.chat_history, user_insights)
-#         st.session_state.pending_message = gemini_reply
-#         st.rerun()
-
-# # --- Download Chat Option ---
-# if "chat_history" in st.session_state and st.session_state.chat_history:
-#     export_text = ""
-#     for sender, msg in st.session_state.chat_history:
-#         emoji = "❓" if sender == "You" else "🔍"
-#         export_text += f"{emoji} {msg}\n\n"
-
-#     st.download_button(
-#         label="📥 Download Chat (.txt)",
-#         data=export_text,
-#         file_name="sparkle_chat.txt",
-#         mime="text/plain"
-#     )
-
 
 # # streamlit_chatbot.py placeholder
 # # streamlit_chatbot.py
