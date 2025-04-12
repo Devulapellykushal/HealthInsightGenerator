@@ -18,7 +18,7 @@ export default function InsightsPage() {
   const [trendImage, setTrendImage] = useState('');
   const [chatOpen, setChatOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [loading, setLoading] = useState(false); // NEW
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -47,16 +47,10 @@ export default function InsightsPage() {
     setTrendImage('');
 
     try {
-      const res = await fetch('https://hig-pzyc.onrender.com/upload-csv/', {
+      const res = await fetch('https://healthinsightgenerator.onrender.com/upload-csv/', {
         method: 'POST',
         body: form
       });
-      
-      // const res = await fetch('http://localhost:10000/upload-csv/', {
-      // // const res = await fetch('https://healthinsightsgenerator.onrender.com/upload-csv/', {
-      //   method: 'POST',
-      //   body: form
-      // });
 
       if (!res.ok) {
         const text = await res.text();
@@ -166,8 +160,7 @@ export default function InsightsPage() {
         {chatOpen && (
           <div className="mt-2 w-[90vw] sm:w-[360px] h-[70vh] sm:h-[480px] bg-white rounded-xl overflow-hidden shadow-xl border">
             <iframe
-            //src="http://localhost:8501/"
-              src="https://hig-pzyc.onrender.com"
+              src="https://streamlitchatbot.onrender.com"
               title="Sparkle Chatbot"
               className="w-full h-full"
               allow="clipboard-write"
@@ -179,6 +172,7 @@ export default function InsightsPage() {
     </main>
   );
 }
+
 // 'use client';
 
 // import { motion } from 'framer-motion';
