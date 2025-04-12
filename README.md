@@ -92,6 +92,16 @@ This project includes:
 
 ## 🧪 Local Setup Instructions
 
+### 🧠 Frontend (React App)
+
+```bash
+cd HealthInsightsGeneratorr/zmlf/app
+rm -rf node_modules package-lock.json .next
+npm cache clean --force
+npm install
+npm run dev
+```
+
 ### Backend
 ```bash
 cd HealthInsightGenerator/zmlb/backend
