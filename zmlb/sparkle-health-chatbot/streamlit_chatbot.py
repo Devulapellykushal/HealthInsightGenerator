@@ -1,4 +1,3 @@
-
 import streamlit as st
 import requests
 import json
@@ -6,11 +5,15 @@ from dotenv import load_dotenv
 import os
 import time
 import pandas as pd
+
+# ✅ This must be the first Streamlit command
 st.set_page_config(page_title="Sparkle AI Health Chatbot", layout="centered")
 
+# --- Load environment variables ---
 load_dotenv()
 GEMINI_API_KEY = "AIzaSyBn3LmJbLYp_BypnA2eSd5YC2kim3wlUWo"
 
+# --- Gemini System Prompt ---
 SYSTEM_PROMPT = """
 You are Sparkle, an AI health coach. Your role is to assist users with health-related queries in a friendly, supportive, and intelligent way.
 
@@ -64,6 +67,7 @@ You are capable of providing personalized guidance and educational support on:
 Always personalize your responses based on the user’s intent and the available insights. Be empathetic, motivational, and avoid generic replies. Your tone should be encouraging and human-like, just like a friendly wellness coach.
 """
 
+# --- Gemini API Call ---
 def ask_gemini(user_message, chat_history, user_insights):
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={GEMINI_API_KEY}"
 
@@ -73,12 +77,12 @@ def ask_gemini(user_message, chat_history, user_insights):
         conversation += f"{role}: {msg}\n"
 
     if user_insights is not None:
-        if isinstance(user_insights, pd.DataFrame):  # If it's a DataFrame
-            if not user_insights.empty:  # Check if the DataFrame is not empty
+        if isinstance(user_insights, pd.DataFrame):
+            if not user_insights.empty:
                 conversation += f"User Insights (Hydration Log): {user_insights.to_string()}\n"
-        elif isinstance(user_insights, dict):  # If it's a JSON object
+        elif isinstance(user_insights, dict):
             conversation += f"User Insights: {json.dumps(user_insights)}\n"
-        elif isinstance(user_insights, str):  # If it's plain text
+        elif isinstance(user_insights, str):
             conversation += f"User Insights: {user_insights}\n"
         
     conversation += f"User: {user_message}\nSparkle:"
@@ -102,34 +106,35 @@ def ask_gemini(user_message, chat_history, user_insights):
     except Exception as e:
         return f"⚠️ Gemini API error: {e}"
 
+# --- UI ---
 st.title("🤖 Sparkle: AI Health Chatbot")
 st.caption("Chat with Sparkle about health, wellness, healthcare, health products, and more.")
 
+# --- Upload Health Insights ---
 with st.container():
     uploaded_file = st.file_uploader("Upload Health Insights File (TXT, CSV, JSON)", type=["txt", "csv", "json"])
 
 user_insights = None
-
 if uploaded_file:
     if uploaded_file.type == "text/plain":
-        user_insights = uploaded_file.getvalue().decode("utf-8") 
+        user_insights = uploaded_file.getvalue().decode("utf-8")
     elif uploaded_file.type == "application/json":
-        user_insights = json.loads(uploaded_file.getvalue().decode("utf-8")) 
+        user_insights = json.loads(uploaded_file.getvalue().decode("utf-8"))
     elif uploaded_file.type == "text/csv":
-        user_insights = pd.read_csv(uploaded_file) 
+        user_insights = pd.read_csv(uploaded_file)
 
-    st.write("Uploaded Insights:")
+    st.write("✅ Uploaded Insights:")
     st.write(user_insights)
 
-
+# --- Initialize Chat History ---
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
 if "pending_message" not in st.session_state:
     st.session_state.pending_message = None
 
+# --- Chat Display ---
 with st.container():
-    # st.markdown("### 🗨️ Health Chat")
     chat_area = st.container()
     with chat_area:
         for sender, msg in st.session_state.chat_history:
@@ -146,6 +151,7 @@ with st.container():
             st.session_state.pending_message = None
             st.rerun()
 
+# --- User Input Form ---
 with st.container():
     with st.form(key="chat_input_form", clear_on_submit=True):
         user_query = st.text_input("💬 Type your message", key="user_input")
@@ -157,6 +163,7 @@ with st.container():
         st.session_state.pending_message = gemini_reply
         st.rerun()
 
+# --- Download Chat Option ---
 if "chat_history" in st.session_state and st.session_state.chat_history:
     export_text = ""
     for sender, msg in st.session_state.chat_history:
