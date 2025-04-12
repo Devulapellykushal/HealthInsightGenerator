@@ -1,21 +1,3 @@
-# import matplotlib
-# matplotlib.use('Agg')  # ✅ Headless backend to avoid macOS GUI crash
-# import matplotlib.pyplot as plt
-# import pandas as pd  # ✅ Required for pd.to_datetime()
-
-# def plot_health_trends(df):
-#     fig, ax = plt.subplots(figsize=(10, 5))  # Optional: set size for clarity
-
-#     df['date'] = pd.to_datetime(df['date'])
-#     df.set_index('date')[['sleep_hours', 'hydration_ml', 'steps']].plot(ax=ax)
-
-#     ax.set_title("Health Trends Over Time")
-#     ax.set_ylabel("Value")
-#     ax.set_xlabel("Date")
-#     ax.grid(True)
-#     plt.tight_layout()
-#     return fig
-
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LogisticRegression
@@ -26,14 +8,12 @@ warnings.filterwarnings('ignore')
 plt.style.use('ggplot')
 
 
-# Load CSV and sort by date
 def load_health_logs(filepath):
     df = pd.read_csv(filepath, parse_dates=['date'])
     df.sort_values('date', inplace=True)
     return df
 
 
-# Train mood prediction model
 def train_mood_model(df):
     if 'mood' not in df.columns:
         raise ValueError("Missing 'mood' column for training.")
@@ -49,35 +29,26 @@ def train_mood_model(df):
     return model, le
 
 
-# Plot health trends + predicted mood
 def plot_health_trends(df):
-    # Predict mood using ML model
     model, le = train_mood_model(df)
     df['predicted_mood'] = le.inverse_transform(model.predict(df[['sleep_hours', 'hydration_ml', 'steps']]))
 
-    # Map predicted mood to numeric values for plotting
     mood_map = {'sad': 0, 'neutral': 1, 'happy': 2}
     df['mood_score'] = df['predicted_mood'].map(mood_map)
 
-    # Scale mood for plotting on same graph
     df['mood_score_scaled'] = df['mood_score'] * 1000
 
-    # Create the plot
-    plt.figure(figsize=(14, 8))  # ⬅️ wider and taller = more readable
+    plt.figure(figsize=(14, 8)) 
 
-    # 📊 Plot core health metrics
     plt.plot(df['date'], df['sleep_hours'], label='sleep_hours', marker='o')
     plt.plot(df['date'], df['hydration_ml'], label='hydration_ml', marker='s')
     plt.plot(df['date'], df['steps'], label='steps', marker='^')
 
-    # 🧠 Plot predicted mood
     plt.plot(df['date'], df['mood_score_scaled'], label='predicted_mood (scaled)', color='purple', linestyle='--', marker='x')
 
-    # 🏷️ Annotate predicted mood labels
     for i, row in df.iterrows():
         plt.text(row['date'], row['mood_score_scaled'] + 150, row['predicted_mood'], fontsize=9, color='purple', ha='center')
 
-    # Final touches
     plt.title(" Health Trends with Predicted Mood")
     plt.xlabel("Date")
     plt.ylabel("Values")
@@ -86,8 +57,7 @@ def plot_health_trends(df):
     plt.xticks(rotation=45)
     plt.tight_layout()
     
-    return plt.gcf()  # Return figure object for saving/embedding
-
+    return plt.gcf()  
 
 
 
