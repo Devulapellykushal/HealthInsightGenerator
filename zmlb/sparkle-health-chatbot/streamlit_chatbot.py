@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import os
 import time
 import pandas as pd
+st.set_page_config(page_title="Sparkle AI Health Chatbot", layout="centered")
 
 load_dotenv()
 GEMINI_API_KEY = "AIzaSyBn3LmJbLYp_BypnA2eSd5YC2kim3wlUWo"
@@ -101,7 +102,6 @@ def ask_gemini(user_message, chat_history, user_insights):
     except Exception as e:
         return f"⚠️ Gemini API error: {e}"
 
-st.set_page_config(page_title="Sparkle AI Health Chatbot", layout="centered")
 st.title("🤖 Sparkle: AI Health Chatbot")
 st.caption("Chat with Sparkle about health, wellness, healthcare, health products, and more.")
 
