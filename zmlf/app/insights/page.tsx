@@ -167,7 +167,7 @@ export default function InsightsPage() {
           <div className="mt-2 w-[90vw] sm:w-[360px] h-[70vh] sm:h-[480px] bg-white rounded-xl overflow-hidden shadow-xl border">
             <iframe
             //src="http://localhost:8501/"
-              src="https://higenerator.streamlit.app/"
+              src="https://hig-pzyc.onrender.com"
               title="Sparkle Chatbot"
               className="w-full h-full"
               allow="clipboard-write"
