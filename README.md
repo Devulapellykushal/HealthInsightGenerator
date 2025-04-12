@@ -94,14 +94,14 @@ This project includes:
 
 ### Backend
 ```bash
-cd HealthInsightsGenerator/zmlb/backend
+cd HealthInsightGenerator/zmlb/backend
 pip install -r requirements.txt
 python api.py
 ```
 
 ### Streamlit Chatbot
 ```bash
-cd HealthInsightsGenerator/zmlb/sparkle-health-chatbot
+cd HealthInsightGenerator/zmlb/sparkle-health-chatbot
 pip install -r requirements.txt
 streamlit run streamlit_chatbot.py
 ```
@@ -131,4 +131,4 @@ streamlit run streamlit_chatbot.py
 
 ## 📹 Demo Video
 
-[Click to Watch Demo](https://drive.google.com/file/d/1v7JlWJQTSNdDmsHe9U-pVqIX1dZO-le4/view?usp=sharing)
+[Click to Watch Demo]([https://drive.google.com/file/d/1v7JlWJQTSNdDmsHe9U-pVqIX1dZO-le4/view?usp=sharing](https://drive.google.com/file/d/1qQC8kOz_FCbP2T0scx788eaV7g2apOFP/view?usp=sharing))
