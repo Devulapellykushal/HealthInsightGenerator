@@ -101,6 +101,15 @@ npm cache clean --force
 npm install
 npm run dev
 ```
+### 🧠 Run Both Backend and Streamlit Chatbot
+
+```bash
+python3 main.py
+```
+or
+```bash
+python main.py
+```
 
 ### Backend
 ```bash
