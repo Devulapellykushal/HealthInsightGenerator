@@ -85,7 +85,7 @@ zml/
 
 This project includes:
 - Flask backend for health trend analysis  
-- Streamlit-based health chatbot  
+- Streamlit-based health chatbot (With Chatgpt like responses) 
 - React frontend (`zmlf/app/`)
 
 ---
